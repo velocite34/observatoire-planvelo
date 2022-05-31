@@ -93,8 +93,7 @@ function getGeojsonLineStringLength($json_file) {
         <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-                <h1>A Bootstrap 5 Starter Template</h1>
-    <div id="map"></div>
+    <div style="margin: auto" id="map"></div>
 
     <script>
       var map = L.map('map').setView([43.60833089648225, 3.875926861270588], 12);
