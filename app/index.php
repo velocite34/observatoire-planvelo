@@ -106,8 +106,37 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-    <div style="margin: auto" id="map"></div>
-
+    <div class="card">
+      <div class="card-body">
+        <div style="margin: auto" id="map"></div>
+      </div>
+    </div>
+    <div style="margin-top: 10px" class="card">
+      <div class="card-body">
+        Etat d'avancement
+        <div class="progress">
+          <div class="progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
+          <div class="progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
+        </div>
+<br />
+Temps écoulé depuis vote du plan vélo (31/05/2022) :
+        <div class="progress">
+          <div class="progress-bar-striped bg-info" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_mandat ?>% passés</div>
+     </div>
+   </div>
+  </div>
+    <div style="margin-top: 10px" class="card">
+      <div class="card-body">
+        <h5 class="card-title">Explications</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the </p>
+      </div>
+  </div>
+  <br />
+</div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
     <script>
       var map = L.map('map').setView([43.60833089648225, 3.875926861270588], 12);
 
@@ -152,25 +181,7 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
       geojsonLayer.addTo(map);
 
     </script>
-    <div style="margin-top: 10px" class="card">
-      <div class="card-body">
-        Etat d'avancement
-        <div class="progress">
-          <div class="progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
-          <div class="progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
-        </div>
-<br />
-Temps écoulé depuis vote du plan vélo (31/05/2022) :
-        <div class="progress">
-          <div class="progress-bar-striped bg-info" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_mandat ?>% passés</div>
-     </div>
-   </div>
-            </div>
-        </div>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+
     </body>
 </html>
 
