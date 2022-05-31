@@ -4,6 +4,6 @@ services:
      image: php:7.2-apache
      working_dir: /var/www/html
      ports:
-       - "{BIND}:80"
+       - "${BIND}:80"
      volumes:
        - ./app:/var/www/html
