@@ -114,13 +114,13 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
     <div style="margin-top: 10px" class="card">
       <div class="card-body">
         Etat d'avancement
-        <div class="progress">
-          <div class="progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
-          <div class="progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
+        <div class="progress" style="height: 20px">
+          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
+          <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
         </div>
 <br />
 Temps écoulé depuis vote du plan vélo (31/05/2022) :
-        <div class="progress">
+        <div class="progress" style="height: 20px">
           <div class="progress-bar-striped bg-info" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_mandat ?>% passés</div>
      </div>
    </div>
