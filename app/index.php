@@ -63,6 +63,15 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+
+
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
     <script src="js/leaflet-ajax.js"></script>
 
@@ -81,6 +90,8 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
 
     </head>
     <body>
+
+
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-yellow">
             <div class="container">
@@ -106,37 +117,79 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-    <div class="card">
-      <div class="card-body">
-        <div style="margin: auto" id="map"></div>
-      </div>
-    </div>
     <div style="margin-top: 10px" class="card">
       <div class="card-body">
-        Etat d'avancement
+        <h5 class="card-title">Plan Vélo</h5>
+        <div style="margin: auto; margin-bottom: 20px" id="map"></div>
+
+        <h6 class="card-subtitle mb-2 text-muted">Etat d'avancement</h5>
         <div class="progress" style="height: 20px">
           <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
           <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
         </div>
 <br />
-Temps écoulé depuis vote du plan vélo (31/05/2022) :
+         <h6 class="card-subtitle mb-2 text-muted">Temps écoulé depuis vote du plan vélo (31/05/2022) :</h5>
         <div class="progress" style="height: 20px">
           <div class="progress-bar-striped bg-info" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_mandat ?>% passés</div>
      </div>
    </div>
   </div>
-    <div style="margin-top: 10px" class="card">
-      <div class="card-body">
-        <h5 class="card-title">Explications</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the </p>
+  <div style="margin-top: 10px" class="card">
+    <div class="card-body">
+      <h5 class="card-title">Autres indicateurs</h5>
+      <h6 class="card-subtitle mb-2 text-muted">Construire x places de parking velo securisées</h6>
+      <div class="progress" style="height: 20px">
+        <div class="progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
+<br />
+      <h6 class="card-subtitle mb-2 text-muted">Réaliser x rues aux écoles</h6>
+      <div class="progress" style="height: 20px">
+        <div class="progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+<br />
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a class="btn" data-bs-toggle="collapse" href="#point1" ><i class="bi bi-check-square" style="font-size:24px; color:green"></i> Communiquer en faveur du vélo</a>
+<div class="collapse" id="point1" style="margin-top: 10px">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
+        </li>
+        <li class="list-group-item"><a class="btn" data-bs-toggle="collapse" href="#point2" ><i class="bi bi-dash-square" style="font-size:24px; color:orange"></i> Passage à 30km/h</a>
+
+<div class="collapse" id="point2" style="margin-top: 10px">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
+</li>
+
+
+        <li class="list-group-item"><a class="btn" data-bs-toggle="collapse" href="#point3" ><i class="bi bi-x-square" style="font-size:24px; color:red"></i> Ouvrir une maison du vélo</a>
+
+<div class="collapse" id="point3" style="margin-top: 10px">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
+</li>
+      </ul>
+
+
+
+    </div>
+  </div>
+    <div style="margin-top: 10px" class="card">
+    <div class="card-body">
+      <h5 class="card-title">Explications</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the </p>
+    </div>
   </div>
   <br />
 </div>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
     <script>
       var map = L.map('map').setView([43.60833089648225, 3.875926861270588], 12);
 
