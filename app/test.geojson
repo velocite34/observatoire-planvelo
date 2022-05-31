@@ -1,0 +1,40 @@
+{
+    "type": "FeatureCollection",
+    "features": [{
+        "type": "Feature",
+        "properties": {
+            "shape": "Line",
+            "name": "Unnamed Layer",
+            "category": "default"
+        },
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [3.869162, 43.615883],
+                [3.889246, 43.602584],
+                [3.900833, 43.615759],
+                [3.872766, 43.622283],
+                [3.889589, 43.613522]
+            ]
+        },
+        "id": "71a95495-efca-4fd2-a3d9-d49f645755cb"
+    }, {
+        "type": "Feature",
+        "properties": {
+            "shape": "Line",
+            "name": "Unnamed Layer",
+            "category": "default",
+            "color":"#ffb6c1"
+        },
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [3.869162, 43.615883],
+                [3.889246, 43.602584],
+                [3.900833, 43.615759],
+                [3.872766, 43.622283]
+            ]
+        },
+        "id": "925f6470-2bc0-402b-9d0a-43f9c26c4205"
+    }]
+}
