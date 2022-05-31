@@ -44,9 +44,9 @@ $ratio_done = round($total_done / $total_todo * 100);
 $ratio_unsat = round($total_unsat / $total_todo * 100);
 
 $fin_mandat = mktime('0','0','0','01','01','2026');
-$validation_plan_velo = mktime('0','0','0','06','01','2022');
-$total_temps = $fin_mandat - $validation_plan_velo;
-$temps_passe = time() - $validation_plan_velo;
+$debut_mandat = mktime('0','0','0','07','01','2020');
+$total_temps = $fin_mandat - $debut_mandat;
+$temps_passe = time() - $debut_mandat;
 $ratio_mandat = round($temps_passe / $total_temps * 100);
 
 ?>
@@ -128,7 +128,7 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
           <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
         </div>
 <br />
-         <h6 class="card-subtitle mb-2 text-muted">Temps écoulé depuis vote du plan vélo (31/05/2022) :</h5>
+         <h6 class="card-subtitle mb-2 text-muted">Temps écoulé depuis le début du mandat :</h5>
         <div class="progress" style="height: 20px">
           <div class="progress-bar-striped bg-info" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_mandat ?>% passés</div>
      </div>
