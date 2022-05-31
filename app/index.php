@@ -36,6 +36,12 @@ function getGeojsonLineStringLength($json_file) {
   }
   return $distance;
 }
+$total_todo = getGeojsonLineStringLength('./geojson/todo.geojson');
+$total_done = getGeojsonLineStringLength('./geojson/done.geojson');
+$total_unsat = getGeojsonLineStringLength('./geojson/nosatisfied.geojson');
+$ratio_done = round($total_done / $total_todo * 100);
+$ratio_unsat = round($total_unsat / $total_todo * 100);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,12 +104,30 @@ function getGeojsonLineStringLength($json_file) {
     <script>
       var map = L.map('map').setView([43.60833089648225, 3.875926861270588], 12);
 
-      function polystyle(feature) {
+      function style_todo(feature) {
         return {
-          fillColor: 'blue',
+          fillColor: 'grey',
           weight: 5,
           opacity: 1,
-          color: 'red',  //Outline color
+          color: 'grey',  //Outline color
+          fillOpacity: 0.7
+        };
+      }
+      function style_done(feature) {
+        return {
+          fillColor: 'green',
+          weight: 5,
+          opacity: 1,
+          color: 'green',  //Outline color
+          fillOpacity: 0.7
+        };
+      }
+      function style_unsat(feature) {
+        return {
+          fillColor: 'orange',
+          weight: 5,
+          opacity: 1,
+          color: 'orange',  //Outline color
           fillOpacity: 0.7
         };
       }
@@ -113,12 +137,23 @@ function getGeojsonLineStringLength($json_file) {
         maxZoom: 19,
         attribution: '<a href="http://www.velocite-montpellier.fr/" title="Vélocité Grand Montpellier">Vélocité Grand Montpellier</a> | <a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
-      var geojsonLayer = new L.GeoJSON.AJAX("./test.geojson",{style: polystyle});       
+      var geojsonLayer = new L.GeoJSON.AJAX("./geojson/todo.geojson",{style: style_todo});       
       geojsonLayer.addTo(map);
-    </script>
+      var geojsonLayer = new L.GeoJSON.AJAX("./geojson/done.geojson",{style: style_done});       
+      geojsonLayer.addTo(map);
+      var geojsonLayer = new L.GeoJSON.AJAX("./geojson/nosatisfied.geojson",{style: style_unsat});       
+      geojsonLayer.addTo(map);
 
-                <p class="lead">A complete project boilerplate built with Bootstrap</p>
-                <p>Bootstrap v5.1.3</p>
+    </script>
+    <div style="margin-top: 10px" class="card">
+      <div class="card-body">
+        Etat d'avancement
+        <div class="progress">
+          <div class="progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
+          <div class="progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
+        </div>
+     </div>
+   </div>
             </div>
         </div>
         <!-- Bootstrap core JS-->

@@ -1,0 +1,19 @@
+{
+    "type": "FeatureCollection",
+    "features": [{
+        "type": "Feature",
+        "properties": {
+            "shape": "Line",
+            "name": "Unnamed Layer",
+            "category": "default"
+        },
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [3.86487, 43.618244],
+                [3.868132, 43.61725]
+            ]
+        },
+        "id": "7bc2dce1-f3f2-4989-bd90-4c9a25a569cb"
+    }]
+}
