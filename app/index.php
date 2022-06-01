@@ -95,12 +95,11 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-yellow">
             <div class="container">
-                <a class="navbar-brand" href="#">Observatoire plan vélo Montpellier</a>
+                <a class="navbar-brand" href="#">Plan vélo Montpellier</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="https://www.velocite-montpellier.fr/">Site Vélocité</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -115,72 +114,106 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
             </div>
         </nav>
         <!-- Page content-->
-        <div class="container">
-            <div class="text-center mt-5">
-    <div style="margin-top: 10px" class="card">
-      <div class="card-body">
-        <h5 class="card-title">Plan Vélo</h5>
-        <div style="margin: auto; margin-bottom: 20px" id="map"></div>
+<div class="container">
+<div class="text-center mt-5">
+  <div style="margin-top: 10px" class="card">
+    <div class="card-body">
+      <h5 class="card-title">Plan Vélo</h5>
+      <div style="margin: auto; margin-bottom: 20px" id="map"></div>
 
-        <h6 class="card-subtitle mb-2 text-muted">Etat d'avancement</h5>
-        <div class="progress" style="height: 20px">
-          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_done ?>% terminé</div>
-          <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_unsat ?>% non satisfaisant</div>
-        </div>
-<br />
-         <h6 class="card-subtitle mb-2 text-muted">Temps écoulé depuis le début du mandat :</h5>
-        <div class="progress" style="height: 20px">
-          <div class="progress-bar-striped bg-info" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio_mandat ?>% passés</div>
-     </div>
-   </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <h6 class="card-subtitle mb-2 text-muted">Etat d'avancement</h6>
+          <div class="progress" style="height: 20px">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_done ?>% terminé
+            </div>
+            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_unsat ?>% non satisfaisant
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="card-subtitle mb-2 text-muted">Temps écoulé depuis le début du mandat :</h6>
+          <div class="progress" style="height: 20px">
+            <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: <?= $ratio_mandat ?>%" aria-valuenow="<?= $ratio_mandat ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_mandat ?>% passés
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
   <div style="margin-top: 10px" class="card">
     <div class="card-body">
       <h5 class="card-title">Autres indicateurs</h5>
-      <h6 class="card-subtitle mb-2 text-muted">Construire x places de parking velo securisées</h6>
-      <div class="progress" style="height: 20px">
-        <div class="progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-<br />
-      <h6 class="card-subtitle mb-2 text-muted">Réaliser x rues aux écoles</h6>
-      <div class="progress" style="height: 20px">
-        <div class="progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-<br />
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><a class="btn" data-bs-toggle="collapse" href="#point1" ><i class="bi bi-check-square" style="font-size:24px; color:green"></i> Communiquer en faveur du vélo</a>
-<div class="collapse" id="point1" style="margin-top: 10px">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-</div>
+        <ul class="list-group list-group-flush">
 
-        </li>
-        <li class="list-group-item"><a class="btn" data-bs-toggle="collapse" href="#point2" ><i class="bi bi-dash-square" style="font-size:24px; color:orange"></i> Passage à 30km/h</a>
-
-<div class="collapse" id="point2" style="margin-top: 10px">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-</div>
+<?php
+  $engagements_progress_file = file_get_contents('./json/engagements_progress.json');
+  $engagements_progress = json_decode($engagements_progress_file, true);
+  $i = 0;
+  foreach($engagements_progress as $engagement_progress) {
+    $ratio = round($engagement_progress['status'] / $engagement_progress['target'] * 100);
+    if($ratio < 50) {
+      $progresscolor = 'bg-danger';
+    }
+    elseif($ratio < 90) {
+      $progresscolor = 'bg-warning';
+    }
+    else {
+       $progresscolor = 'bg-success';
+    }
+?>
+<li class="list-group-item">
+      <h6 class="card-subtitle mb-2 text-muted">
+        <a class="btn" data-bs-toggle="collapse" href="#progress<?=$i ?>"><?= $engagement_progress['title'] ?></a>
+      </h6>
+      <div class="progress" style="height: 20px">
+        <div class="progress-bar progress-bar-striped <?= $progresscolor ?>" role="progressbar" style="width: <?=$ratio ?>%" aria-valuenow="<?=$ratio ?>" aria-valuemin="0" aria-valuemax="100"><?= $ratio ?>%</div>
+      </div>
+      <div class="collapse" id="progress<?=$i ?>" style="margin-top: 10px">
+        <div class="card card-body">
+          <?=$engagement_progress['description'] ?>
+        </div>
+      </div>
 
 </li>
-
-
-        <li class="list-group-item"><a class="btn" data-bs-toggle="collapse" href="#point3" ><i class="bi bi-x-square" style="font-size:24px; color:red"></i> Ouvrir une maison du vélo</a>
-
-<div class="collapse" id="point3" style="margin-top: 10px">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+<?php 
+  $i++;
+  } 
+  $engagements_bin_file = file_get_contents('./json/engagements_binaires.json');
+  $engagements_bin = json_decode($engagements_bin_file, true);
+  $i = 0;
+  foreach($engagements_bin as $engagement_bin) {
+    switch($engagement_bin['status']) {
+      case 2: 
+        $icon = 'bi-check-square';
+        $icon_color = 'green';
+        break;
+      case 1:
+        $icon = 'bi-dash-square';
+        $icon_color = 'orange';
+        break;
+      default:
+        $icon = 'bi-x-square';
+        $icon_color = 'red';
+    }
+?>
+    <li class="list-group-item">
+      <a class="btn" data-bs-toggle="collapse" href="#point<?=$i ?>" ><i class="bi <?=$icon ?>" style="font-size:24px; color:<?= $icon_color ?>"></i> <?= $engagement_bin['title'] ?></a>
+      <div class="collapse" id="point<?=$i ?>" style="margin-top: 10px">
+        <div class="card card-body">
+          <?= $engagement_bin['description'] ?>
+        </div>
+      </div>
+    </li>
+<?php
+    $i++;
+   }
+?>
+  </ul>
   </div>
-</div>
-
-</li>
-      </ul>
-
-
-
-    </div>
   </div>
     <div style="margin-top: 10px" class="card">
     <div class="card-body">
