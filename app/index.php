@@ -16,23 +16,35 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
       return $miles;
   }
 }
+function getDistanceOfLineString($linestring) {
+  $distance = 0;
+  $i = 0;
+  do {
+    $lat0 = $linestring[$i][0];
+    $lon0 = $linestring[$i][1];
+    $j = $i + 1;
+    $lat1 = $linestring[$j][0];
+    $lon1 = $linestring[$j][1];
+    $distance = $distance + distance($lat0,$lon0,$lat1,$lon1,'K');
+    $i++;
+  } while (count($linestring) > ($j + 1)); 
+  return $distance;
+}
+
 function getGeojsonLineStringLength($json_file) {
   $string = file_get_contents($json_file);
   $json_a = json_decode($string, true);
   $distance = 0;
-  
+ 
   foreach($json_a['features'] as $feature) {
-    $i = 0;
-    do {
-      $lat0 = $feature['geometry']['coordinates'][$i][0];
-      $lon0 = $feature['geometry']['coordinates'][$i][1];
-      $j = $i + 1;
-      $lat1 = $feature['geometry']['coordinates'][$j][0];
-      $lon1 = $feature['geometry']['coordinates'][$j][1];
-  
-      $distance = $distance + distance($lat0,$lon0,$lat1,$lon1,'K');
-      $i++;
-    } while (count($feature['geometry']['coordinates']) > ($j + 1));
+    if($feature['geometry']['type'] == 'MultiLineString') {
+      foreach($feature['geometry']['coordinates'] as $linestring) {
+        $distance = $distance + getDistanceOfLineString($linestring);
+      }
+    }
+    elseif ($feature['geometry']['type'] == 'LineString') {
+      $distance = $distance + getDistanceOfLineString($feature['geometry']['coordinates']);
+    }
   }
   return $distance;
 }
