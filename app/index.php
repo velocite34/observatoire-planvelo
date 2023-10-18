@@ -120,7 +120,13 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
     <div class="card-body">
       <h5 class="card-title">Plan Vélo</h5>
       <div style="margin: auto; margin-bottom: 20px" id="map"></div>
-
+      <button id="mapbtn_amns" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Avant Mandat (satisfaisant)</button>
+      <button id="mapbtn_ams" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Avant Mandat (non satisfaisant)</button>
+      <button id="mapbtn_ns" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Non satisfaisant</button>
+      <button id="mapbtn_s" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Satisfaisant</button>
+      <button id="mapbtn_todo" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Annoncé</button>
+      <br />
+      <br />
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <h6 class="card-subtitle mb-2 text-muted">Etat d'avancement</h6>
@@ -230,7 +236,7 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         return {
           fillColor: 'grey',
           weight: 5,
-          opacity: 1,
+          opacity: 0.5,
           color: 'grey',  //Outline color
           fillOpacity: 0.7
         };
@@ -254,18 +260,39 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         };
       }
 
+      function hideDisplayLayer(layer) {
+        if(layers.includes(layer)) {
+          var index = layers.indexOf(layer);
+          if (index !== -1) {
+            layers.splice(index, 1);
+          }
+          map.removeLayer(layer);
+        }
+        else {
+          map.addLayer(layer);
+          layers.push(layer);
+        }
+      }
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '<a href="http://www.velocite-montpellier.fr/" title="Vélocité Grand Montpellier">Vélocité Grand Montpellier</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
-      var geojsonLayer = new L.GeoJSON.AJAX("./geojson/todo.geojson",{style: style_todo});       
-      geojsonLayer.addTo(map);
-      var geojsonLayer = new L.GeoJSON.AJAX("./geojson/done.geojson",{style: style_done});       
-      geojsonLayer.addTo(map);
-      var geojsonLayer = new L.GeoJSON.AJAX("./geojson/nosatisfied.geojson",{style: style_unsat});       
-      geojsonLayer.addTo(map);
 
+      var geojsonLayerTODO = new L.GeoJSON.AJAX("./geojson/todo.geojson",{style: style_todo});       
+      var geojsonLayerDone = new L.GeoJSON.AJAX("./geojson/done.geojson",{style: style_done});       
+      var geojsonLayerNoSatisfied = new L.GeoJSON.AJAX("./geojson/nosatisfied.geojson",{style: style_unsat});       
+
+      var layers = [  geojsonLayerDone, geojsonLayerNoSatisfied ]
+      layers.forEach(function (item) {
+        item.addTo(map);
+      });
+
+      $( "#mapbtn_amns" ).on( "click", function() {
+        hideDisplayLayer(geojsonLayerTODO);
+      } );
+/* map.removeLayer(layer); 
+ map.addLayer(layer); */
     </script>
 
     </body>
