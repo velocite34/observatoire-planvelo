@@ -319,6 +319,7 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
       const geojsonLayerWipOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_ok.geojson",{style: style_WipOK,onEachFeature}).addTo(map);
       const geojsonLayerTarget2026 = new L.GeoJSON.AJAX(GeoJSONURL + "/target_2026.geojson",{style: style_Target2026,onEachFeature}).addTo(map);
       var layers = [  geojsonLayerTarget2026,geojsonLayerBeforeNotOK,geojsonLayerBeforeOK,geojsonLayerWipNotOK,geojsonLayerWipOK ]
+      var mouseLatLng = {lat: null, lng: null}; 
 
       map.on("layeradd", function (event) {
         geojsonLayerTarget2026.bringToBack();
@@ -334,9 +335,16 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
 	  return this._div;
       };
 
-      info.update = function (props) {
-        console.log(props);
-        const contents = props ? `<b>${props.od}</b><br />Veloligne ${props.nom_itiner}<br />Longueur: ${props.length_km}km` : 'Selectionnez un tronçon';
+      info.update = function (props,latlng) {
+        $("#infostreet").html('');
+        if(latlng) {
+          $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+latlng['lat']+'&lon='+latlng['lng'], function(data){
+            if(data.address.road != undefined) {
+              $("#infostreet").html('Rue: ' + data.address.road + '<br />');
+            }
+          });
+        }
+        const contents = props ? `<b>${props.od}</b><br />Veloligne ${props.nom_itiner}<br /><span id="infostreet"></span>Longueur: ${props.length_km}km` : 'Selectionnez un tronçon';
 	this._div.innerHTML = `<h4>Plan vélo</h4>${contents}`;
       };
     
@@ -344,13 +352,14 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
 
       function highlightFeature(e) {
         const layer = e.target;
+        mouseLatLng = e.latlng;
 
-	  layer.setStyle({
-	    weight: 7,
-	  });
+        layer.setStyle({
+	  weight: 7,
+	});
 
-	  layer.bringToFront();
-          info.update(layer.feature.properties);
+	layer.bringToFront();
+        info.update(layer.feature.properties,mouseLatLng);
       }
       function resetHighlight(e) {
         const layer = e.target;
@@ -360,10 +369,9 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
 	info.update();
       }
       function onEachFeature(feature, layer) {
-          console.log(layer);
           layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
 /*			click: zoomToFeature*/
 	});
       }
