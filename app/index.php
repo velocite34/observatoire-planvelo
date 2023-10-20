@@ -53,8 +53,12 @@ $GeoJsonURL = "https://raw.githubusercontent.com/jesuisundesdeux/observatoire-ca
 $total_todo = getGeojsonLineStringLength($GeoJsonURL . '/target_2026.geojson');
 $total_done = getGeojsonLineStringLength($GeoJsonURL . '/wip_ok.geojson');
 $total_unsat = getGeojsonLineStringLength($GeoJsonURL . '/wip_nok.geojson');
+$total_pdone = getGeojsonLineStringLength($GeoJsonURL . '/before_ok.geojson');
+$total_punsat = getGeojsonLineStringLength($GeoJsonURL . '/before_not_ok.geojson');
 $ratio_done = round($total_done / $total_todo * 100);
 $ratio_unsat = round($total_unsat / $total_todo * 100);
+$ratio_pdone = round($total_pdone / $total_todo * 100);
+$ratio_punsat = round($total_punsat / $total_todo * 100);
 
 $fin_mandat = mktime('0','0','0','01','01','2026');
 $debut_mandat = mktime('0','0','0','07','01','2020');
@@ -100,6 +104,8 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
       max-height: 100%;
     }
   </style>
+<style>.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+</style>
 
     </head>
     <body>
@@ -133,11 +139,19 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
         <li class="list-group-item">
           <h6 class="card-subtitle mb-2 text-muted">Etat d'avancement</h6>
           <div class="progress" style="height: 20px">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100">
-              <?= $ratio_done ?>% terminé
+
+            <div class="progress-bar progress-bar-striped" role="progressbar" style="background-color: #FFB600; width: <?= $ratio_punsat ?>%" aria-valuenow="<?= $ratio_punsat ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_punsat ?>%
             </div>
-            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100">
-              <?= $ratio_unsat ?>% non satisfaisant
+            <div class="progress-bar progress-bar-striped" role="progressbar" style="background-color: #00FF51; width: <?= $ratio_pdone ?>%" aria-valuenow="<?= $ratio_pdone ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_pdone ?>%
+            </div>
+            <div class="progress-bar progress-bar-striped" role="progressbar" style="background-color: #FF0000; width: <?= $ratio_unsat ?>%" aria-valuenow="<?= $ratio_unsat ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_unsat ?>% 
+            </div>
+
+            <div class="progress-bar progress-bar-striped" role="progressbar" style="background-color: #1F753A; width: <?= $ratio_done ?>%" aria-valuenow="<?= $ratio_done ?>" aria-valuemin="0" aria-valuemax="100">
+              <?= $ratio_done ?>%
             </div>
           </div>
         </li>
@@ -232,6 +246,7 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
   <br />
 </div>
     <script>
+/* https://leafletjs.com/examples/choropleth/example.html */
       function style_Target2026(feature) {
         return {
           fillColor: '#94B8FF',
@@ -298,29 +313,60 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
       }).addTo(map);
 
       var GeoJSONURL = "https://raw.githubusercontent.com/jesuisundesdeux/observatoire-carte/main/geojson/";
-      var geojsonLayerBeforeNotOK = new L.GeoJSON.AJAX(GeoJSONURL + "/before_not_ok.geojson",{style: style_BeforeNotOK});       
-      var geojsonLayerBeforeOK = new L.GeoJSON.AJAX(GeoJSONURL + "/before_ok.geojson",{style: style_BeforeOK});
-      var geojsonLayerWipNotOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_nok.geojson",{style: style_WipNotOK});
-      var geojsonLayerWipOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_ok.geojson",{style: style_WipOK});
-      var geojsonLayerTarget2026 = new L.GeoJSON.AJAX(GeoJSONURL + "/target_2026.geojson",{style: style_Target2026});
+      const geojsonLayerBeforeNotOK = new L.GeoJSON.AJAX(GeoJSONURL + "/before_not_ok.geojson",{style: style_BeforeNotOK,onEachFeature}).addTo(map);   
+      const geojsonLayerBeforeOK = new L.GeoJSON.AJAX(GeoJSONURL + "/before_ok.geojson",{style: style_BeforeOK,onEachFeature}).addTo(map);
+      const geojsonLayerWipNotOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_nok.geojson",{style: style_WipNotOK,onEachFeature}).addTo(map);
+      const geojsonLayerWipOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_ok.geojson",{style: style_WipOK,onEachFeature}).addTo(map);
+      const geojsonLayerTarget2026 = new L.GeoJSON.AJAX(GeoJSONURL + "/target_2026.geojson",{style: style_Target2026,onEachFeature}).addTo(map);
       var layers = [  geojsonLayerTarget2026,geojsonLayerBeforeNotOK,geojsonLayerBeforeOK,geojsonLayerWipNotOK,geojsonLayerWipOK ]
 
       map.on("layeradd", function (event) {
         geojsonLayerTarget2026.bringToBack();
       });
 
-      layers.forEach(function (item) {
-        map.addLayer(item);
-        item.on( "mouseover", function() {
-          item.setStyle(function(e) {
-            return { weight: 7 }});
-        });
-        item.on( "mouseout", function() {
-          item.setStyle(function(e) {
-            return { weight: 5 }});
-        });
-      });
 
+      // control that shows state info on hover
+      const info = L.control();
+
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+	  this.update();
+	  return this._div;
+      };
+
+      info.update = function (props) {
+        console.log(props);
+        const contents = props ? `<b>${props.od}</b><br />Veloligne ${props.nom_itiner}<br />Longueur: ${props.length_km}km` : 'Selectionnez un tronçon';
+	this._div.innerHTML = `<h4>Plan vélo</h4>${contents}`;
+      };
+    
+      info.addTo(map);
+
+      function highlightFeature(e) {
+        const layer = e.target;
+
+	  layer.setStyle({
+	    weight: 7,
+	  });
+
+	  layer.bringToFront();
+          info.update(layer.feature.properties);
+      }
+      function resetHighlight(e) {
+        const layer = e.target;
+        layer.setStyle({
+          weight: 5,
+        });
+	info.update();
+      }
+      function onEachFeature(feature, layer) {
+          console.log(layer);
+          layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+/*			click: zoomToFeature*/
+	});
+      }
       $( "#mapbtn_BeforeNotOK").on( "click", function() {
         hideDisplayLayer(geojsonLayerBeforeNotOK);
       });
