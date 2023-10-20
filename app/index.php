@@ -344,8 +344,8 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
             }
           });
         }
-        const contents = props ? `<b>${props.od}</b><br />Veloligne ${props.nom_itiner}<br /><span id="infostreet"></span>Longueur: ${props.length_km}km` : 'Selectionnez un tronçon';
-	this._div.innerHTML = `<h4>Plan vélo</h4>${contents}`;
+        const contents = props ? `<b>${props.od}</b><br />Veloligne ${props.nom_itiner}<br /><span id="infostreet"></span>Longueur: ${props.length_km}km` : 'Selectionner un tronçon';
+	this._div.innerHTML = `${contents}`;
       };
     
       info.addTo(map);
