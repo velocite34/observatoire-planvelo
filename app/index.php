@@ -49,9 +49,10 @@ function getGeojsonLineStringLength($json_file) {
   return $distance;
 }
 
-$total_todo = getGeojsonLineStringLength('./geojson/todo.geojson');
-$total_done = getGeojsonLineStringLength('./geojson/done.geojson');
-$total_unsat = getGeojsonLineStringLength('./geojson/nosatisfied.geojson');
+$GeoJsonURL = "https://raw.githubusercontent.com/jesuisundesdeux/observatoire-carte/main/geojson/";
+$total_todo = getGeojsonLineStringLength($GeoJsonURL . '/target_2026.geojson');
+$total_done = getGeojsonLineStringLength($GeoJsonURL . '/wip_ok.geojson');
+$total_unsat = getGeojsonLineStringLength($GeoJsonURL . '/wip_nok.geojson');
 $ratio_done = round($total_done / $total_todo * 100);
 $ratio_unsat = round($total_unsat / $total_todo * 100);
 
@@ -119,12 +120,13 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
   <div style="margin-top: 10px" class="card">
     <div class="card-body">
       <h5 class="card-title">Plan Vélo</h5>
+
       <div style="margin: auto; margin-bottom: 20px" id="map"></div>
-      <button id="mapbtn_amns" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Avant Mandat (satisfaisant)</button>
-      <button id="mapbtn_ams" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Avant Mandat (non satisfaisant)</button>
-      <button id="mapbtn_ns" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Non satisfaisant</button>
-      <button id="mapbtn_s" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Satisfaisant</button>
-      <button id="mapbtn_todo" type="button" class="btn" style="font-size: x-small; background-color: grey; color: rgb(255, 255, 255)">Annoncé</button>
+      <button id="mapbtn_BeforeNotOK" type="button" class="btn" style="font-size: x-small; background-color: #FFB600; color: rgb(255, 255, 255)">Avant Mandat (non satisfaisant)</button>
+      <button id="mapbtn_BeforeOK" type="button" class="btn" style="font-size: x-small; background-color: #00FF51; color: rgb(255, 255, 255)">Avant Mandat (satisfaisant)</button>
+      <button id="mapbtn_WipNotOK" type="button" class="btn" style="font-size: x-small; background-color: #FF0000 ; color: rgb(255, 255, 255)">En cours (Non satisfaisant)</button>
+      <button id="mapbtn_WipOK" type="button" class="btn" style="font-size: x-small; background-color: #1F753A; color: rgb(255, 255, 255)">En cours (Satisfaisant)</button>
+      <button id="mapbtn_Target2026" type="button" class="btn" style="font-size: x-small; background-color: #94B8FF; color: rgb(255, 255, 255)">Annoncé en 2026</button>
       <br />
       <br />
       <ul class="list-group list-group-flush">
@@ -230,32 +232,48 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
   <br />
 </div>
     <script>
-      var map = L.map('map').setView([43.60833089648225, 3.875926861270588], 12);
-
-      function style_todo(feature) {
+      function style_Target2026(feature) {
         return {
-          fillColor: 'grey',
+          fillColor: '#94B8FF',
           weight: 5,
-          opacity: 0.5,
-          color: 'grey',  //Outline color
+          opacity: 1,
+          color: '#94B8FF',  //Outline color
+          fillOpacity: 0.5
+        };
+      }
+      function style_BeforeNotOK(feature) {
+        return {
+          fillColor: '#FFB600',
+          weight: 5,
+          opacity: 1,
+          color: '#FFB600',  //Outline color
           fillOpacity: 0.7
         };
       }
-      function style_done(feature) {
+      function style_BeforeOK(feature) {
         return {
-          fillColor: 'green',
+          fillColor: '#00FF51',
           weight: 5,
           opacity: 1,
-          color: 'green',  //Outline color
+          color: '#00FF51',  //Outline color
           fillOpacity: 0.7
         };
       }
-      function style_unsat(feature) {
+      function style_WipNotOK(feature) {
         return {
-          fillColor: 'orange',
+          fillColor: '#FF0000',
           weight: 5,
           opacity: 1,
-          color: 'orange',  //Outline color
+          color: '#FF0000',  //Outline color
+          fillOpacity: 0.7
+        };
+      }
+      function style_WipOK(feature) {
+        return {
+          fillColor: '#1F753A',
+          weight: 5,
+          opacity: 1,
+          color: '#1F753A',  //Outline color
           fillOpacity: 0.7
         };
       }
@@ -273,26 +291,52 @@ $ratio_mandat = round($temps_passe / $total_temps * 100);
           layers.push(layer);
         }
       }
-
+      var map = L.map('map').setView([43.60833089648225, 3.875926861270588], 12);
       L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '<a href="http://www.velocite-montpellier.fr/" title="Vélocité Grand Montpellier">Vélocité Grand Montpellier</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      var geojsonLayerTODO = new L.GeoJSON.AJAX("./geojson/todo.geojson",{style: style_todo});       
-      var geojsonLayerDone = new L.GeoJSON.AJAX("./geojson/done.geojson",{style: style_done});       
-      var geojsonLayerNoSatisfied = new L.GeoJSON.AJAX("./geojson/nosatisfied.geojson",{style: style_unsat});       
+      var GeoJSONURL = "https://raw.githubusercontent.com/jesuisundesdeux/observatoire-carte/main/geojson/";
+      var geojsonLayerBeforeNotOK = new L.GeoJSON.AJAX(GeoJSONURL + "/before_not_ok.geojson",{style: style_BeforeNotOK});       
+      var geojsonLayerBeforeOK = new L.GeoJSON.AJAX(GeoJSONURL + "/before_ok.geojson",{style: style_BeforeOK});
+      var geojsonLayerWipNotOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_nok.geojson",{style: style_WipNotOK});
+      var geojsonLayerWipOK = new L.GeoJSON.AJAX(GeoJSONURL + "/wip_ok.geojson",{style: style_WipOK});
+      var geojsonLayerTarget2026 = new L.GeoJSON.AJAX(GeoJSONURL + "/target_2026.geojson",{style: style_Target2026});
+      var layers = [  geojsonLayerTarget2026,geojsonLayerBeforeNotOK,geojsonLayerBeforeOK,geojsonLayerWipNotOK,geojsonLayerWipOK ]
 
-      var layers = [  geojsonLayerDone, geojsonLayerNoSatisfied ]
-      layers.forEach(function (item) {
-        item.addTo(map);
+      map.on("layeradd", function (event) {
+        geojsonLayerTarget2026.bringToBack();
       });
 
-      $( "#mapbtn_amns" ).on( "click", function() {
-        hideDisplayLayer(geojsonLayerTODO);
-      } );
-/* map.removeLayer(layer); 
- map.addLayer(layer); */
+      layers.forEach(function (item) {
+        map.addLayer(item);
+        item.on( "mouseover", function() {
+          item.setStyle(function(e) {
+            return { weight: 7 }});
+        });
+        item.on( "mouseout", function() {
+          item.setStyle(function(e) {
+            return { weight: 5 }});
+        });
+      });
+
+      $( "#mapbtn_BeforeNotOK").on( "click", function() {
+        hideDisplayLayer(geojsonLayerBeforeNotOK);
+      });
+      $( "#mapbtn_BeforeOK").on( "click", function() {
+        hideDisplayLayer(geojsonLayerBeforeOK);
+      });
+      $( "#mapbtn_WipNotOK").on( "click", function() {
+        hideDisplayLayer(geojsonLayerWipNotOK);
+      });
+      $( "#mapbtn_WipOK").on( "click", function() {
+         hideDisplayLayer(geojsonLayerWipOK);
+      });
+      $( "#mapbtn_Target2026").on( "click", function() {
+        hideDisplayLayer(geojsonLayerTarget2026);
+      });
+
     </script>
 
     </body>
